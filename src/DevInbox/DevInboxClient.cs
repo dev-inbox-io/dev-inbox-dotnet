@@ -17,7 +17,7 @@ namespace DevInbox
         private static readonly Lazy<DevInboxClient> _instance =
             new Lazy<DevInboxClient>(() => new DevInboxClient(DefaultApiKey, DefaultApiUrl));
 
-        private static string DefaultApiKey { get; set; }
+        private static string DefaultApiKey { get; set; } = string.Empty;
         private static string DefaultApiUrl { get; set; } = "https://api.devinbox.io/";
 
         private readonly HttpClient _httpClient;
@@ -74,7 +74,7 @@ namespace DevInbox
             // Deserialize the response content to the Mailbox object
             var responseContent = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<Mailbox>(responseContent, _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<Mailbox>(responseContent, _jsonSerializerOptions) ?? throw new InvalidProgramException("Unable to deserialize response from server");
         }
 
         async Task IDevInbox.CreateMailbox(CreateMailboxOptions options)
@@ -96,7 +96,7 @@ namespace DevInbox
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<MessageCountResult>(responseContent, _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<MessageCountResult>(responseContent, _jsonSerializerOptions) ?? throw new InvalidProgramException("Unable to deserialize response from server");
         }
 
         async Task<MessageList> IDevInbox.GetMessages(string mailboxKey, int skip, int take)
@@ -107,7 +107,7 @@ namespace DevInbox
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<MessageList>(responseContent, _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<MessageList>(responseContent, _jsonSerializerOptions) ?? throw new InvalidProgramException("Unable to deserialize response from server");
         }
 
         async Task<Message> IDevInbox.GetLastMessage(string mailboxKey)
@@ -118,7 +118,7 @@ namespace DevInbox
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<Message>(responseContent, _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<Message>(responseContent, _jsonSerializerOptions) ?? throw new InvalidProgramException("Unable to deserialize response from server");
         }
 
         async Task<Message> IDevInbox.GetSingleMessage(string mailboxKey)
@@ -129,7 +129,7 @@ namespace DevInbox
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<Message>(responseContent, _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<Message>(responseContent, _jsonSerializerOptions) ?? throw new InvalidProgramException("Unable to deserialize response from server");
         }
     }
 }

@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>adospace</Authors>
+    <Description>Create effective email integration tests in .NET with DevInbox.io. More info at https://devinbox.io</Description>
+    <Copyright>WebCo SRLS</Copyright>
+    <PackageProjectUrl>https://github.com/dev-inbox-io/dev-inbox-dotnet</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/dev-inbox-io/dev-inbox-dotnet</RepositoryUrl>
+    <PackageTags>.net email integration test</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
