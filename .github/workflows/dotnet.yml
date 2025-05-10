@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      Solution_Name: ./src/DevInbox.sln
-      Test_Project: ./src/DevInbox.ApiTests/DevInbox.ApiTests.csproj
+      Solution_Name: /src/DevInbox.sln
+      Test_Project: /src/DevInbox.ApiTests/DevInbox.ApiTests.csproj
       Version: 1.0.0-beta
       DEVINBOX_API_KEY: ${{ secrets.DEVINBOX_API_KEY }}
 
