@@ -99,15 +99,37 @@ namespace DevInbox
             return JsonSerializer.Deserialize<MessageCountResult>(responseContent, _jsonSerializerOptions);
         }
 
-        async Task<MessageList> IDevInbox.GetMessages(string mailboxKey, int skip = 0, int take = 10)
+        async Task<MessageList> IDevInbox.GetMessages(string mailboxKey, int skip, int take)
         {
-            var response = await _httpClient.GetAsync($"/messages/{mailboxKey}/all");
+            var response = await _httpClient.GetAsync($"/messages/{mailboxKey}?skip={skip}&take={take}");
 
             response.EnsureSuccessStatusCode();
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
             return JsonSerializer.Deserialize<MessageList>(responseContent, _jsonSerializerOptions);
+        }
+
+        async Task<Message> IDevInbox.GetLastMessage(string mailboxKey)
+        {
+            var response = await _httpClient.GetAsync($"/messages/{mailboxKey}/last");
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<Message>(responseContent, _jsonSerializerOptions);
+        }
+
+        async Task<Message> IDevInbox.GetSingleMessage(string mailboxKey)
+        {
+            var response = await _httpClient.GetAsync($"/messages/{mailboxKey}/single");
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<Message>(responseContent, _jsonSerializerOptions);
         }
     }
 }

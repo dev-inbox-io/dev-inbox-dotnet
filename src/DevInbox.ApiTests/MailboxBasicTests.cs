@@ -63,7 +63,33 @@ namespace DevInbox.ApiTests
             messages.Messages[0].To[0].ShouldBe("to@dummy.com");
 
             messages.Messages[0].Subject.ShouldBe("Test Email");
-            messages.Messages[0].Body.ShouldBe("This is a test email sent to the mailbox.");
+
+            //note: smtpclient body is trailed with ln or crlf, trim it
+            messages.Messages[0].Body.TrimEnd().ShouldBe("This is a test email sent to the mailbox.");
+
+            var lastMessage = await DevInboxClient.Instance.GetLastMessage(mailbox.Key);
+            lastMessage.ShouldNotBeNull();
+            lastMessage.From.ShouldNotBeNull();
+            lastMessage.From.Length.ShouldBe(1);
+            lastMessage.From[0].ShouldNotBeNull();
+            lastMessage.From[0].ShouldBe("from@dummy.com");
+
+            lastMessage.To.ShouldNotBeNull();
+            lastMessage.To.Length.ShouldBe(1);
+            lastMessage.To[0].ShouldNotBeNull();
+            lastMessage.To[0].ShouldBe("to@dummy.com");
+
+            lastMessage.Subject.ShouldNotBeNull();
+            lastMessage.Subject.ShouldBe("Test Email");
+            lastMessage.Body.ShouldNotBeNull();
+            //note: smtpclient body is trailed with ln or crlf, trim it
+            lastMessage.Body.TrimEnd().ShouldBe("This is a test email sent to the mailbox.");
+
+            lastMessage.IsHtml.ShouldBeFalse();
+
+            var singleMessage = await DevInboxClient.Instance.GetSingleMessage(mailbox.Key);
+            singleMessage.ShouldNotBeNull();
+            singleMessage.ShouldBeEquivalentTo(lastMessage);
         }
 
         [TestMethod]
@@ -121,6 +147,29 @@ namespace DevInbox.ApiTests
 
             messages.Messages[0].Subject.ShouldBe("Test Email");
             messages.Messages[0].Body.ShouldBe("This is a test email sent to the mailbox.");
+
+            var lastMessage = await DevInboxClient.Instance.GetLastMessage(mailbox.Key);
+            lastMessage.ShouldNotBeNull();
+            lastMessage.From.ShouldNotBeNull();
+            lastMessage.From.Length.ShouldBe(1);
+            lastMessage.From[0].ShouldNotBeNull();
+            lastMessage.From[0].ShouldBe("from@dummy.com");
+
+            lastMessage.To.ShouldNotBeNull();
+            lastMessage.To.Length.ShouldBe(1);
+            lastMessage.To[0].ShouldNotBeNull();
+            lastMessage.To[0].ShouldBe("to@dummy.com");
+
+            lastMessage.Subject.ShouldNotBeNull();
+            lastMessage.Subject.ShouldBe("Test Email");
+            lastMessage.Body.ShouldNotBeNull();
+            lastMessage.Body.ShouldBe("This is a test email sent to the mailbox.");
+
+            lastMessage.IsHtml.ShouldBeFalse();
+
+            var singleMessage = await DevInboxClient.Instance.GetSingleMessage(mailbox.Key);
+            singleMessage.ShouldNotBeNull();
+            singleMessage.ShouldBeEquivalentTo(lastMessage);
         }
 
     }

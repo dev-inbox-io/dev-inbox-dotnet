@@ -4,20 +4,12 @@ using System.Text.Json.Serialization;
 
 namespace DevInbox
 {
-    public enum LineEndingHandling
-    {
-        Preserve,  // Keep as received
-        Normalize, // Convert to a standard format
-        Strip      // Remove trailing line endings
-    }
-
-    public class CreateMailBoxModel
+    public class MailboxCreateModel
     {
         public string Name { get; set; }
 
         public string Project { get; set; }
 
-        public LineEndingHandling LineEndingMode { get; set; } = LineEndingHandling.Normalize;
     }
 
     public class Mailbox
