@@ -1,0 +1,648 @@
+openapi: 3.0.1
+info:
+  title: DevInbox.ApiService | v1
+  version: 1.0.0
+servers:
+- url: http://localhost:5062/
+tags:
+- name: Mailboxes
+- name: Messages
+paths:
+  /mailboxes:
+    post:
+      description: "Creates a new mailbox for receiving test emails. If no name is\
+        \ provided, a temporary mailbox is created."
+      operationId: CreateMailbox
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MailboxCreateModel"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MailboxViewModel"
+          description: OK
+        "400":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+      summary: Create a new mailbox
+      tags:
+      - Mailboxes
+  /messages/{key}/count:
+    get:
+      description: Returns the total number of messages in the specified mailbox.
+      operationId: GetMessageCount
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageCountResult"
+          description: OK
+        "400":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Forbidden
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      summary: Get message count for a mailbox
+      tags:
+      - Messages
+  /messages/{key}:
+    get:
+      description: "Retrieves messages from the specified mailbox with optional pagination.\
+        \ Default: skip=0, take=10, max take=25."
+      operationId: GetMessages
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: skip
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: take
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessagesViewModel"
+          description: OK
+        "400":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Forbidden
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      summary: Get messages from a mailbox
+      tags:
+      - Messages
+  /messages/{key}/single:
+    get:
+      description: Retrieves a single message from the specified mailbox. Returns
+        an error if the mailbox contains 0 or more than 1 message.
+      operationId: GetSingleMessage
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageViewModel"
+          description: OK
+        "400":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Forbidden
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      summary: Get single message from a mailbox
+      tags:
+      - Messages
+  /messages/{key}/{template}/single:
+    get:
+      description: Retrieves a single message from the specified mailbox and parses
+        it using the provided template. Returns an error if the mailbox contains 0
+        or more than 1 message.
+      operationId: GetSingleMessageWithTemplate
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: template
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageParsedViewModel"
+          description: OK
+        "400":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Forbidden
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      summary: Get single message with template parsing
+      tags:
+      - Messages
+  /messages/{key}/last:
+    get:
+      description: Retrieves the most recent message from the specified mailbox. Returns
+        an error if the mailbox is empty.
+      operationId: GetLastMessage
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageViewModel"
+          description: OK
+        "400":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Forbidden
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      summary: Get the last message from a mailbox
+      tags:
+      - Messages
+  /messages/{key}/{template}/last:
+    get:
+      description: Retrieves the most recent message from the specified mailbox and
+        parses it using the provided template. Returns an error if the mailbox is
+        empty.
+      operationId: GetLastMessageWithTemplate
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: template
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageParsedViewModel"
+          description: OK
+        "400":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Forbidden
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      summary: Get the last message with template parsing
+      tags:
+      - Messages
+  /messages/{key}/get:
+    get:
+      description: Retrieves a specific message from the specified mailbox using its
+        unique ID.
+      operationId: GetMessageById
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageViewModel"
+          description: OK
+        "400":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Forbidden
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      summary: Get a specific message by ID
+      tags:
+      - Messages
+components:
+  schemas:
+    MailboxCreateModel:
+      example:
+        name: name
+        projectName: projectName
+      properties:
+        name:
+          description: "Optional name for the mailbox. If not provided, a temporary\
+            \ mailbox will be created."
+          maxLength: 100
+          nullable: true
+          type: string
+        projectName:
+          description: "Name of the project to associate the mailbox with. If not\
+            \ provided, uses the default project."
+          maxLength: 100
+          nullable: true
+          type: string
+      required:
+      - name
+      - projectName
+      type: object
+    MailboxViewModel:
+      example:
+        password: password
+        key: key
+      properties:
+        key:
+          description: Unique identifier for the mailbox (<key>@devinbox.io)
+          type: string
+        password:
+          description: Password for accessing the mailbox (SMTP)
+          type: string
+      required:
+      - key
+      - password
+      type: object
+    MessageCountResult:
+      example:
+        count: 0
+        key: key
+      properties:
+        key:
+          description: Mailbox unique identifier
+          type: string
+        count:
+          description: Number of messages in the mailbox
+          format: int32
+          type: integer
+      required:
+      - count
+      - key
+      type: object
+    MessageParsedViewModel:
+      example:
+        cc:
+        - cc
+        - cc
+        bcc:
+        - bcc
+        - bcc
+        subject:
+          key: subject
+        isHtml: true
+        from:
+        - from
+        - from
+        received: 2000-01-23T04:56:07.000+00:00
+        to:
+        - to
+        - to
+        body:
+          key: body
+        uniqueId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        uniqueId:
+          description: Unique identifier for the message
+          format: uuid
+          type: string
+        from:
+          description: Array of sender email addresses
+          items:
+            type: string
+          nullable: true
+          type: array
+        to:
+          description: Array of recipient email addresses
+          items:
+            type: string
+          nullable: true
+          type: array
+        cc:
+          description: Array of CC email addresses
+          items:
+            type: string
+          nullable: true
+          type: array
+        bcc:
+          description: Array of BCC email addresses
+          items:
+            type: string
+          nullable: true
+          type: array
+        subject:
+          additionalProperties:
+            type: string
+          description: Parsed subject template parameters
+          nullable: true
+          type: object
+        body:
+          additionalProperties:
+            type: string
+          description: Parsed body template parameters
+          nullable: true
+          type: object
+        isHtml:
+          description: Whether the email body is HTML format
+          type: boolean
+        received:
+          description: Timestamp when the message was received
+          format: date-time
+          type: string
+      required:
+      - bcc
+      - body
+      - cc
+      - from
+      - isHtml
+      - received
+      - subject
+      - to
+      - uniqueId
+      type: object
+    MessagesViewModel:
+      example:
+        count: 0
+        messages:
+        - cc:
+          - cc
+          - cc
+          bcc:
+          - bcc
+          - bcc
+          subject: subject
+          isHtml: true
+          from:
+          - from
+          - from
+          received: 2000-01-23T04:56:07.000+00:00
+          to:
+          - to
+          - to
+          body: body
+          uniqueId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - cc:
+          - cc
+          - cc
+          bcc:
+          - bcc
+          - bcc
+          subject: subject
+          isHtml: true
+          from:
+          - from
+          - from
+          received: 2000-01-23T04:56:07.000+00:00
+          to:
+          - to
+          - to
+          body: body
+          uniqueId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        key: key
+      properties:
+        key:
+          description: Mailbox unique identifier
+          type: string
+        count:
+          description: Total number of messages in the mailbox
+          format: int32
+          type: integer
+        messages:
+          description: Collection of message view models
+          items:
+            $ref: "#/components/schemas/MessageViewModel"
+          type: array
+      required:
+      - count
+      - key
+      - messages
+      type: object
+    MessageViewModel:
+      example:
+        cc:
+        - cc
+        - cc
+        bcc:
+        - bcc
+        - bcc
+        subject: subject
+        isHtml: true
+        from:
+        - from
+        - from
+        received: 2000-01-23T04:56:07.000+00:00
+        to:
+        - to
+        - to
+        body: body
+        uniqueId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        uniqueId:
+          description: Unique identifier for the message
+          format: uuid
+          type: string
+        from:
+          description: Array of sender email addresses
+          items:
+            type: string
+          nullable: true
+          type: array
+        to:
+          description: Array of recipient email addresses
+          items:
+            type: string
+          nullable: true
+          type: array
+        cc:
+          description: Array of CC email addresses
+          items:
+            type: string
+          nullable: true
+          type: array
+        bcc:
+          description: Array of BCC email addresses
+          items:
+            type: string
+          nullable: true
+          type: array
+        subject:
+          description: Email subject line
+          nullable: true
+          type: string
+        body:
+          description: Email body content
+          nullable: true
+          type: string
+        isHtml:
+          description: Whether the email body is HTML format
+          type: boolean
+        received:
+          description: Timestamp when the message was received
+          format: date-time
+          type: string
+      required:
+      - bcc
+      - body
+      - cc
+      - from
+      - isHtml
+      - received
+      - subject
+      - to
+      - uniqueId
+      type: object
+    ProblemDetails:
+      properties:
+        type:
+          nullable: true
+          type: string
+        title:
+          nullable: true
+          type: string
+        status:
+          format: int32
+          nullable: true
+          type: integer
+        detail:
+          nullable: true
+          type: string
+        instance:
+          nullable: true
+          type: string
+      type: object
+
