@@ -29,13 +29,13 @@ namespace DevInbox.Sample
     /// 
     /// Body (pay attention to whitespaces):
     /// ```
-    ///     <html>
-    ///     <body>
-    ///         <h2>Hello {{ user_name }},</h2>
-    ///         <p>This is a simple test message to verify email delivery.</p>
-    ///         <p>If you receive this, the system is working correctly.</p>
-    ///     </body>
-    ///     </html>
+    ///<html>
+    ///<body>
+    ///     <h2>Hello {{ user_name }},</h2>
+    ///     <p>This is a simple test message to verify email delivery.</p>
+    ///    <p>If you receive this, the system is working correctly.</p>
+    ///</body>
+    /// </html>
     /// ```
     /// 
     /// Subject:
@@ -145,13 +145,9 @@ namespace DevInbox.Sample
             if (!emailSent)
             {
                 throw new InvalidOperationException("Failed to send email via SMTP. This is a critical test failure.");
-            }
+            }            
             
-            // 5. Wait a moment for email to be processed
-            Console.WriteLine("\n⏳ Waiting for email to be processed...");
-            await Task.Delay(2000); // Wait 2 seconds
-            
-            // 6. Check that the email was received
+            // 5. Check that the email was received
             Console.WriteLine($"\n📬 Checking if email was received...");
             
             var countResponseAfter = await messagesApi.GetMessageCountAsync(mailboxKey);
@@ -213,7 +209,7 @@ namespace DevInbox.Sample
                 Console.WriteLine($"   📄 Content preview: {preview}");
             }
             
-            // 7. Test getting single message with template parsing
+            // 6. Test getting single message with template parsing
             Console.WriteLine($"\n🔍 Testing single message retrieval with 'onboarding' template...");
             try
             {
@@ -332,13 +328,13 @@ If you receive this, the system is working correctly.";
         static string CreateTestHtml()
         {
             return @"
-    <html>
-    <body>
-        <h2>Hello John Doe,</h2>
-        <p>This is a simple test message to verify email delivery.</p>
-        <p>If you receive this, the system is working correctly.</p>
-    </body>
-    </html>
+<html>
+<body>
+    <h2>Hello John Doe,</h2>
+    <p>This is a simple test message to verify email delivery.</p>
+    <p>If you receive this, the system is working correctly.</p>
+</body>
+</html>
     ";
         }
 
