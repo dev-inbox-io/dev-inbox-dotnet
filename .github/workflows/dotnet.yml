@@ -8,7 +8,7 @@ jobs:
     env:
       Solution_Name: ./DevInbox.Client.sln
       Test_Project: ./src/DevInbox.Client.Test/DevInbox.Client.Test.csproj
-      Version: 1.0.1-beta
+      Version: 1.0.2
       DEVINBOX_API_KEY: ${{ secrets.DEVINBOX_API_KEY }}
     steps:
     - name: Checkout
