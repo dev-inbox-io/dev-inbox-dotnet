@@ -10,13 +10,15 @@
     <Company>DevInbox</Company>
     <AssemblyTitle>OpenAPI Library</AssemblyTitle>
     <Description>DevInbox .NET Client Library</Description>
-    <Copyright>No Copyright</Copyright>
+    <Copyright>DevInbox</Copyright>
     <RootNamespace>DevInbox.Client</RootNamespace>
     <Version>1.0.0</Version>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\DevInbox.Client.xml</DocumentationFile>
-    <RepositoryUrl>https://github.com/GIT_USER_ID/GIT_REPO_ID.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/dev-inbox-io/dev-inbox-dotnet</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>Minor update</PackageReleaseNotes>
+    <PackageTags>test integration email</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <Nullable>enable</Nullable>
     <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
   </PropertyGroup>
