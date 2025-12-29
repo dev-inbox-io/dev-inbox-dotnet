@@ -6,9 +6,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      Solution_Name: ./src/DevInbox.sln
-      Test_Project: ./src/DevInbox.ApiTests/DevInbox.ApiTests.csproj
-      Version: 1.0.1-beta
+      Solution_Name: ./DevInbox.Client.sln
+      Test_Project: ./src/DevInbox.Client.Test/DevInbox.Client.Test.csproj
+      Version: 1.0.2
       DEVINBOX_API_KEY: ${{ secrets.DEVINBOX_API_KEY }}
     steps:
     - name: Checkout

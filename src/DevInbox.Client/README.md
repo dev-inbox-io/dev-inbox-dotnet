@@ -1,40 +1,4 @@
-# Created with Openapi Generator
-
-<a id="cli"></a>
-## Creating the library
-Create a config.yaml file similar to what is below, then run the following powershell command to generate the library `java -jar "<path>/openapi-generator/modules/openapi-generator-cli/target/openapi-generator-cli.jar" generate -c config.yaml`
-
-```yaml
-generatorName: csharp
-inputSpec: /local/openapi.json
-outputDir: out
-
-# https://openapi-generator.tech/docs/generators/csharp
-additionalProperties:
-  packageGuid: '{B7DF9001-6AD3-463B-894C-40FC778032B9}'
-
-# https://openapi-generator.tech/docs/integrations/#github-integration
-# gitHost:
-# gitUserId:
-# gitRepoId:
-
-# https://openapi-generator.tech/docs/globals
-# globalProperties:
-
-# https://openapi-generator.tech/docs/customization/#inline-schema-naming
-# inlineSchemaOptions:
-
-# https://openapi-generator.tech/docs/customization/#name-mapping
-# modelNameMappings:
-# nameMappings:
-
-# https://openapi-generator.tech/docs/customization/#openapi-normalizer
-# openapiNormalizer:
-
-# templateDir: https://openapi-generator.tech/docs/templating/#modifying-templates
-
-# releaseNote:
-```
+# DevInbox .NET Client SDK
 
 <a id="usage"></a>
 ## Using the library in your project
