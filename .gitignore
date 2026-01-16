@@ -360,3 +360,15 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# OpenAPI Generator generated files (should be ignored if nested incorrectly)
+src/src/
+src/.openapi-generator/
+src/.openapi-generator-ignore
+src/git_push.sh
+src/appveyor.yml
+src/api/
+src/docs/
+src/README.md
+src/DevInbox.Client.sln
+src/.gitignore

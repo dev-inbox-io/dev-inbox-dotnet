@@ -35,11 +35,13 @@ namespace DevInbox.Client.Model
         /// </summary>
         /// <param name="name">Optional name for the mailbox. If not provided, a temporary mailbox will be created.</param>
         /// <param name="projectName">Name of the project to associate the mailbox with. If not provided, uses the default project.</param>
+        /// <param name="isTemporary">Whether the mailbox should be temporary or persistent.</param>
         [JsonConstructor]
-        public MailboxCreateModel(string? name = default, string? projectName = default)
+        public MailboxCreateModel(string? name = default, string? projectName = default, bool isTemporary = true)
         {
             Name = name;
             ProjectName = projectName;
+            IsTemporary = isTemporary;
             OnCreated();
         }
 
@@ -60,6 +62,13 @@ namespace DevInbox.Client.Model
         public string? ProjectName { get; set; }
 
         /// <summary>
+        /// Whether the mailbox should be temporary or persistent.
+        /// </summary>
+        /// <value>Whether the mailbox should be temporary or persistent.</value>
+        [JsonPropertyName("isTemporary")]
+        public bool IsTemporary { get; set; } = true;
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -69,6 +78,7 @@ namespace DevInbox.Client.Model
             sb.Append("class MailboxCreateModel {\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  ProjectName: ").Append(ProjectName).Append("\n");
+            sb.Append("  IsTemporary: ").Append(IsTemporary).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -120,6 +130,7 @@ namespace DevInbox.Client.Model
 
             Option<string?> name = default;
             Option<string?> projectName = default;
+            Option<bool?> isTemporary = default;
 
             while (utf8JsonReader.Read())
             {
@@ -142,19 +153,20 @@ namespace DevInbox.Client.Model
                         case "projectName":
                             projectName = new Option<string?>(utf8JsonReader.GetString());
                             break;
+                        case "isTemporary":
+                            isTemporary = new Option<bool?>(utf8JsonReader.GetBoolean());
+                            break;
                         default:
                             break;
                     }
                 }
             }
 
-            if (!name.IsSet)
-                throw new ArgumentException("Property is required for class MailboxCreateModel.", nameof(name));
-
-            if (!projectName.IsSet)
-                throw new ArgumentException("Property is required for class MailboxCreateModel.", nameof(projectName));
-
-            return new MailboxCreateModel(name.Value!, projectName.Value!);
+            // name and projectName are optional, so we don't throw if they're not set
+            return new MailboxCreateModel(
+                name.IsSet ? name.Value! : default,
+                projectName.IsSet ? projectName.Value! : default,
+                isTemporary.IsSet && isTemporary.Value.HasValue ? isTemporary.Value!.Value : true);
         }
 
         /// <summary>
@@ -190,6 +202,8 @@ namespace DevInbox.Client.Model
                 writer.WriteString("projectName", mailboxCreateModel.ProjectName);
             else
                 writer.WriteNull("projectName");
+
+            writer.WriteBoolean("isTemporary", mailboxCreateModel.IsTemporary);
         }
     }
 }
