@@ -38,7 +38,7 @@ A comprehensive console application that demonstrates the complete DevInbox work
 
 - .NET 8.0 or later
 - A DevInbox account and API key from [https://devinbox.io](https://devinbox.io)
-- The DevInbox API service running on `http://localhost:5062`
+- Internet connection to access the DevInbox API at `https://api.devinbox.io`
 
 ## Solution Structure
 
